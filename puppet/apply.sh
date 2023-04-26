@@ -24,12 +24,12 @@ if [ -z "${FACTER_JDG_DEBIAN_ARCH:-}" ] ; then
 fi
 
 if ! [ -r jenkins_debian_glue.pp ] ; then
-  wget https://raw.github.com/mika/jenkins-debian-glue/master/puppet/jenkins_debian_glue.pp
+  wget https://raw.github.com/gorbyo/jenkins-debian-glue/master/puppet/jenkins_debian_glue.pp
 fi
 
 if ! [ -r jenkins_debian_glue.pp ] ; then
   echo "Error: can not find jenkins_debian_glue.pp." >&2
-  echo "Make sure to fetch e.g. https://raw.github.com/mika/jenkins-debian-glue/master/puppet/jenkins_debian_glue.pp" >&2
+  echo "Make sure to fetch e.g. https://raw.github.com/gorbyo/jenkins-debian-glue/master/puppet/jenkins_debian_glue.pp" >&2
   exit 1
 fi
 
@@ -90,7 +90,7 @@ if puppet apply jenkins_debian_glue.pp ; then
   if ! package_installed jenkins jenkins-debian-glue; then
     echo "While puppet reported a successful run, jenkins and/or jenkins-debian-glue aren't successfully installed. :(" >&2
     echo "Please re-execute this script and if the problem persists please report this at" >&2
-    echo "https://github.com/mika/jenkins-debian-glue/issues" >&2
+    echo "https://github.com/gorbyo/jenkins-debian-glue/issues" >&2
     exit 1
   fi
 
@@ -122,7 +122,7 @@ please install the plugin by visiting:
 and then click on the 'Restart Jenkins' option there.
 
 If the Git plugin is missing a dependency please report this at
-https://github.com/mika/jenkins-debian-glue/issues
+https://github.com/gorbyo/jenkins-debian-glue/issues
 
 Enjoy your jenkins-debian-glue system!
 
