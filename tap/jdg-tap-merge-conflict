@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+if ARGV[0].nil?
+  $stderr.puts "Usage: #{File.basename $0} <file>"
+  exit 1
+end
+
+if not system "which grep >/dev/null 2>&1"
+  $stderr.puts "Error: program grep does not exist (install grep package)."
+  exit 1
+end
+
+file = ARGV[0]
+
+if File.directory? file
+  $stderr.puts "#{file} is a directory. Ignoring."
+  exit 0
+elsif not File.exists? file
+  $stderr.puts "Error: file #{file} could not be read."
+  exit 1
+end
+
+output = %x{grep -n -e '^<<<<<<< ' -e '^=======$' -e '^>>>>>>> ' #{file} 2>&1}
+
+num_lines = output.lines.count
+num_error = num_lines / 3
+exit 0 if num_error == 0 # nothing found, jey
+errors = []
+tmp = []
+
+output.gsub(/:\n/, ':').each_line do |oline|
+  num_line, line = oline.split(':', 2)
+  tmp_len = tmp.length
+  if tmp_len == 0 && line =~ /^<<<<<<< /
+    tmp.push oline
+  elsif tmp_len == 1
+    if line =~ /^=======$/
+      tmp.push oline
+    else
+      tmp.pop
+    end
+  elsif tmp_len == 2
+    if line =~ /^>>>>>>> /
+      errors.push tmp[0], tmp[1], oline
+      tmp.clear
+    end
+  else
+    tmp.clear
+  end
+end
+
+exit 0 if errors.length == 0 # nothing found, jey
+
+counter = 1
+# output result in TAP format
+puts "1..#{errors.length}"
+errors.each do |critic|
+  puts "not ok #{counter}           #{critic}"
+  counter += 1
+end
