@@ -2,13 +2,14 @@ Source: jenkins-debian-glue
 Section: admin
 Priority: optional
 Maintainer: Michael Prokop <mika@debian.org>
-Standards-Version: 4.6.1
+Standards-Version: 4.7.2
 Homepage: https://github.com/mika/jenkins-debian-glue
 Vcs-Git: https://github.com/mika/jenkins-debian-glue.git
 Vcs-Browser: https://github.com/mika/jenkins-debian-glue
 Build-Depends:
  debhelper-compat (= 12),
- shunit2,
+ ruby <!nocheck>,
+ shunit2 <!nocheck>,
 
 Package: jenkins-debian-glue
 Architecture: all
@@ -38,10 +39,10 @@ Description: Jenkins Debian glue scripts
 Package: jenkins-debian-glue-buildenv
 Architecture: all
 Depends:
+ dpkg-dev,
  build-essential,
  cowbuilder,
  devscripts,
- dpkg-dev,
  eatmydata,
  fakeroot,
  file,
@@ -75,7 +76,7 @@ Replaces:
 Recommends:
  curl,
  libperl-critic-perl,
- pep8,
+ pycodestyle,
  qemu-user-static,
  shellcheck,
 Description: Jenkins Debian glue scripts - dependency package

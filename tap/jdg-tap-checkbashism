@@ -12,13 +12,13 @@ end
 
 file = ARGV[0]
 
-if not File.exists? file
+if not File.exist? file
   $stderr.puts "Error: file #{file} could not be read."
   exit 1
 end
 
 # Make sure we're looking at sh code.
-mimetype = `file -b -i #{file}`.gsub(/\n/,"")
+mimetype = `file -Pbytes=32 -b -i #{file}`.gsub(/\n/,"")
 if not /.*x-shellscript/i.match(mimetype)
   $stderr.puts "File #{file} doesn't look like sh code [#{mimetype}]. Ignoring."
   exit 0
